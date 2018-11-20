@@ -16,7 +16,7 @@ const filter = function(predicate, elements) {
   return processedElements;
 }
 
-const reduce = function(reducer, elements,initializer) {
+const reduce = function(reducer, initializer, elements) {
   let result = elements[0];
   let position = 1;
 
@@ -38,4 +38,3 @@ module.exports = {
   filter,
   reduce
 }
- 
