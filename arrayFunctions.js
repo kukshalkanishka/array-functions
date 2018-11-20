@@ -1,4 +1,4 @@
-const map = function(elements, mapper){
+const map = function(mapper, elements){
   let processedElements = [];
   for(element of elements){
     processedElements.push(mapper(element));
@@ -6,7 +6,7 @@ const map = function(elements, mapper){
   return processedElements;
 }
 
-const filter = function(elements, predicate) { 
+const filter = function(predicate, elements) { 
   let processedElements = [];
   for(element of elements){
     if(predicate(element)) {
@@ -16,7 +16,7 @@ const filter = function(elements, predicate) {
   return processedElements;
 }
 
-const reduce = function(elements, reducer, initializer) {
+const reduce = function(reducer, elements,initializer) {
   let result = elements[0];
   let position = 1;
 
