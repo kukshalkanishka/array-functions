@@ -20,7 +20,7 @@ const reduce = function(reducer, initializer, elements) {
   let result = elements[0];
   let position = 1;
 
-  if(initializer){
+  if(initializer || initializer == 0){
     result = initializer;
     position = 0;
   }
@@ -33,8 +33,20 @@ const reduce = function(reducer, initializer, elements) {
   return result;
 }
 
+const mapPrime = function(mapper, elements) {
+
+  const reducer = function(initializer, element) {
+    initializer.push(mapper(element));
+    return initializer;
+  }
+
+  let result = reduce(reducer, [], elements);
+  return result;
+}
+
 module.exports = {
   map,
   filter,
-  reduce
+  reduce,
+  mapPrime,
 }
