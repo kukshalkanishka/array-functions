@@ -80,13 +80,13 @@ describe("reduce", function() {
 });
 
 describe("map prime", function() {
- let strings = ["hey", "this"];
 
   it("should return an empty array when empty array is provided", function() {
     assert.deepEqual(mapPrime(incrementByOne, []),[]);
   });
 
   it("should return array of same length when multi-elements array is provided", function() {
+    let strings = ["hey", "this"];
     assert.deepEqual(mapPrime(incrementByOne, [1]),[2]);
     assert.deepEqual(mapPrime(incrementByOne, [1,2,3]),[2,3,4]);
     assert.deepEqual(mapPrime(append, strings), ["hey hello", "this hello"]);
