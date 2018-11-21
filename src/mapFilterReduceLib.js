@@ -20,7 +20,7 @@ const reduce = function(reducer, initializer, elements) {
   let result = elements[0];
   let position = 1;
 
-  if(initializer || initializer == 0){
+  if(initializer != undefined){
     result = initializer;
     position = 0;
   }
@@ -33,14 +33,29 @@ const reduce = function(reducer, initializer, elements) {
   return result;
 }
 
-const mapPrime = function(mapper, elements) {
-
-  const reducer = function(initializer, element) {
+const reducerGenerater = function(mapper){
+  return function(initializer, element) {
     initializer.push(mapper(element));
     return initializer;
   }
+}
 
-  let result = reduce(reducer, [], elements);
+const mapPrime = function(mapper, elements) {
+  let result = reduce(reducerGenerater(mapper), [], elements);
+    return result;
+}
+
+const predicateGenerater = function(predicate) {
+  return function(initializer, element) {
+    if(predicate(element)) {
+      initializer.push(element);
+    }
+    return initializer;
+  }
+}
+
+const filterPrime= function(predicate, elements) {
+  let result = reduce(predicateGenerater(predicate), [], elements);
   return result;
 }
 
@@ -49,4 +64,5 @@ module.exports = {
   filter,
   reduce,
   mapPrime,
+  filterPrime
 }

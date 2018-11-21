@@ -1,11 +1,11 @@
 const assert = require('assert');
-const lib = require('../src/mapFilterReduceLib.js');
 const { 
   map, 
   filter,
   reduce,
-  mapPrime
-} = lib;
+  mapPrime,
+  filterPrime
+}= require('../src/mapFilterReduceLib.js');
 
 const incrementByOne = function(number) {
   return ++number;
@@ -44,8 +44,11 @@ describe("map", function() {
     assert.deepEqual(map(incrementByOne, []),[]);
   });
 
-  it("should return array of same length when multi-elements array is provided", function() {
+  it("should return single element when a single element array is passed", function() {
     assert.deepEqual(map(incrementByOne, [1]),[2]);
+  });
+
+  it("should return array of same length when multi-elements array is provided", function() {
     assert.deepEqual(map(incrementByOne, [1,2,3]),[2,3,4]);
     assert.deepEqual(map(append, strings), ["hey hello", "this hello"]);
     assert.deepEqual(map(changeCase, strings), ["HEY", "THIS"]);
@@ -57,9 +60,17 @@ describe("filter", function() {
     assert.deepEqual(filter(isEven, []),[]);
   });
 
+  it("should return empty array when predicate returns falsy value for every element", function() {
+    assert.deepEqual(filter(isEven, [1,3,5]),[]);
+  });
+
+
+  it("should return identical array when predicate returns true value for every element", function() {
+    assert.deepEqual(filter(isEven, [2,4,6]),[2,4,6]);
+  });
+
   it("should collect elements for which predicate returns true value", function() {
     assert.deepEqual(filter(isEven, [1]),[]);
-    assert.deepEqual(filter(isEven, [1,2,3,4,5,6]),[2,4,6]);
     assert.deepEqual(filter(isAboveThreshold(3), [1,2,3,4,5,6]),[4,5,6]);
   });
 });
@@ -85,11 +96,35 @@ describe("map prime", function() {
     assert.deepEqual(mapPrime(incrementByOne, []),[]);
   });
 
+  it("should return single element when a single element array is passed", function() {
+    assert.deepEqual(mapPrime(incrementByOne, [1]),[2]);
+  });
+
+
   it("should return array of same length when multi-elements array is provided", function() {
     let strings = ["hey", "this"];
-    assert.deepEqual(mapPrime(incrementByOne, [1]),[2]);
     assert.deepEqual(mapPrime(incrementByOne, [1,2,3]),[2,3,4]);
     assert.deepEqual(mapPrime(append, strings), ["hey hello", "this hello"]);
     assert.deepEqual(mapPrime(changeCase, strings), ["HEY", "THIS"]);
+  });
+});
+
+describe("filterPrime", function() {
+  it("should return empty array when an empty array is provided", function() {
+    assert.deepEqual(filterPrime(isEven, []),[]);
+  });
+
+  it("should return empty array when predicate returns falsy value for every element", function() {
+    assert.deepEqual(filterPrime(isEven, [1,3,5]),[]);
+  });
+
+
+  it("should return identical array when predicate returns true value for every element", function() {
+    assert.deepEqual(filterPrime(isEven, [2,4,6]),[2,4,6]);
+  });
+
+  it("should collect elements for which predicate returns true value", function() {
+    assert.deepEqual(filterPrime(isEven, [1]),[]);
+    assert.deepEqual(filterPrime(isAboveThreshold(3), [1,2,3,4,5,6]),[4,5,6]);
   });
 });
