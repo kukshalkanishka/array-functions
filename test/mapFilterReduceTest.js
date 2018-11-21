@@ -64,7 +64,6 @@ describe("filter", function() {
     assert.deepEqual(filter(isEven, [1,3,5]),[]);
   });
 
-
   it("should return identical array when predicate returns true value for every element", function() {
     assert.deepEqual(filter(isEven, [2,4,6]),[2,4,6]);
   });
@@ -82,10 +81,13 @@ describe("reduce", function() {
     assert.equal(reduce(concat, undefined, ["h", "e", "l", "l", "o"]), "hello");
   });
 
-  it("should return a reduced value when the initializer is defined", function() {
-    assert.equal(reduce(add, 4,[1,2,3,4,5,6]), 25);
+  it("should return identical array when array is an empty array with initializer", function() {
     assert.equal(reduce(add, 0, []),0);
     assert.equal(reduce(add, 2, []),2);
+  });
+
+  it("should return a reduced value when the initializer is defined", function() {
+    assert.equal(reduce(add, 4,[1,2,3,4,5,6]), 25);
     assert.equal(reduce(concat, "K", ["h", "e", "l", "l", "o"]), "Khello");
   });
 });
@@ -99,7 +101,6 @@ describe("map prime", function() {
   it("should return single element when a single element array is passed", function() {
     assert.deepEqual(mapPrime(incrementByOne, [1]),[2]);
   });
-
 
   it("should return array of same length when multi-elements array is provided", function() {
     let strings = ["hey", "this"];
@@ -117,7 +118,6 @@ describe("filterPrime", function() {
   it("should return empty array when predicate returns falsy value for every element", function() {
     assert.deepEqual(filterPrime(isEven, [1,3,5]),[]);
   });
-
 
   it("should return identical array when predicate returns true value for every element", function() {
     assert.deepEqual(filterPrime(isEven, [2,4,6]),[2,4,6]);
