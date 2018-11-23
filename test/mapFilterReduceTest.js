@@ -4,7 +4,8 @@ const {
   mapPrime,
   filterPrime,
   recursiveMap,
-  recursiveFilter
+  recursiveFilter,
+//  recursiveReduce
 }= require('../src/mapFilterReduceLib.js');
 
 const incrementByOne = function(number) {

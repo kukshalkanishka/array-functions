@@ -50,22 +50,14 @@ const recursiveMap = function(mapper, elements, currentResult = []){
     currentResult.concat([mapper(elements[0])]));
 }
 
-const filterTruthyElement = function(predicate, element) {
-  if(predicate(element)){
-    return [element];
-  }
-  return;
-}
-
 const recursiveFilter = function(predicate, elements, currentResult = []) {
   if(elements.length == 0) {
     return currentResult;
   }
-  return recursiveFilter(predicate, elements.slice(1),
-    (filterTruthyElement(predicate, elements[0]) && 
-      currentResult.concat(filterTruthyElement(predicate, elements[0]))
-    ) ||
-    currentResult);
+  if(predicate(elements[0])) { 
+    currentResult.push(elements[0]);
+  }
+  return recursiveFilter(predicate, elements.slice(1),currentResult);
 }
 
 module.exports = {
@@ -73,5 +65,6 @@ module.exports = {
   mapPrime,
   filterPrime,
   recursiveMap,
-  recursiveFilter
+  recursiveFilter,
+//  recursiveReduce
 }
