@@ -1,10 +1,10 @@
 const assert = require('assert');
 const { 
-  map, 
-  filter,
   reduce,
   mapPrime,
-  filterPrime
+  filterPrime,
+  recursiveMap,
+  recursiveFilter
 }= require('../src/mapFilterReduceLib.js');
 
 const incrementByOne = function(number) {
@@ -36,43 +36,6 @@ const isAboveThreshold = function(threshold) {
 const concat = function(element1, element2) {
   return element1 + element2;
 }
-
-describe("map", function() {
-  let strings = ["hey", "this"];
-
-  it("should return an empty array when empty array is provided", function() {
-    assert.deepEqual(map(incrementByOne, []),[]);
-  });
-
-  it("should return single element when a single element array is passed", function() {
-    assert.deepEqual(map(incrementByOne, [1]),[2]);
-  });
-
-  it("should return array of same length when multi-elements array is provided", function() {
-    assert.deepEqual(map(incrementByOne, [1,2,3]),[2,3,4]);
-    assert.deepEqual(map(append, strings), ["hey hello", "this hello"]);
-    assert.deepEqual(map(changeCase, strings), ["HEY", "THIS"]);
-  });
-});
-
-describe("filter", function() {
-  it("should return empty array when an empty array is provided", function() {
-    assert.deepEqual(filter(isEven, []),[]);
-  });
-
-  it("should return empty array when predicate returns falsy value for every element", function() {
-    assert.deepEqual(filter(isEven, [1,3,5]),[]);
-  });
-
-  it("should return identical array when predicate returns true value for every element", function() {
-    assert.deepEqual(filter(isEven, [2,4,6]),[2,4,6]);
-  });
-
-  it("should collect elements for which predicate returns true value", function() {
-    assert.deepEqual(filter(isEven, [1]),[]);
-    assert.deepEqual(filter(isAboveThreshold(3), [1,2,3,4,5,6]),[4,5,6]);
-  });
-});
 
 describe("reduce", function() {
   it("should return a reduced value when the initializer is undefined", function() {
@@ -128,3 +91,62 @@ describe("filterPrime", function() {
     assert.deepEqual(filterPrime(isAboveThreshold(3), [1,2,3,4,5,6]),[4,5,6]);
   });
 });
+
+describe.skip("recursive recursiveReduce", function() {
+  it("should return a recursiveReduced value when the initializer is undefined", function() {
+    assert.equal(recursiveReduce(add, undefined, [1]),1);
+    assert.equal(recursiveReduce(add, undefined, [1,2,3,4,5,6]),21);
+    assert.equal(recursiveReduce(concat, undefined, ["h", "e", "l", "l", "o"]), "hello");
+  });
+
+  it("should return identical array when array is an empty array with initializer", function() {
+    assert.equal(recursiveReduce(add, 0, []),0);
+    assert.equal(recursiveReduce(add, 2, []),2);
+  });
+
+  it("should return a recursiveReduced value when the initializer is defined", function() {
+    assert.equal(recursiveReduce(add, 4,[1,2,3,4,5,6]), 25);
+    assert.equal(recursiveReduce(concat, "K", ["h", "e", "l", "l", "o"]), "Khello");
+  });
+
+});
+
+describe("recursiveMap", function() {
+  let strings = ["hey", "this"];
+
+  it("should return an empty array when empty array is provided", function() {
+    assert.deepEqual(recursiveMap(incrementByOne, []),[]);
+  });
+
+  it("should return single element when a single element array is passed", function() {
+    assert.deepEqual(recursiveMap(incrementByOne, [1]),[2]);
+  });
+
+  it("should return array of same length when multi-elements array is provided", function() {
+    assert.deepEqual(recursiveMap(incrementByOne, [1,2,3]),[2,3,4]);
+    assert.deepEqual(recursiveMap(append, strings), ["hey hello", "this hello"]);
+    assert.deepEqual(recursiveMap(changeCase, strings), ["HEY", "THIS"]);
+  });
+
+});
+
+describe("recursiveFilter", function() {
+  it("should return empty array when an empty array is provided", function() {
+    assert.deepEqual(recursiveFilter(isEven, []),[]);
+  });
+
+  it("should return empty array when predicate returns falsy value for every element", function() {
+    assert.deepEqual(recursiveFilter(isEven, [1,3,5]),[]);
+  });
+
+  it("should return identical array when predicate returns true value for every element", function() {
+    assert.deepEqual(recursiveFilter(isEven, [2,4,6]),[2,4,6]);
+  });
+
+  it("should collect elements for which predicate returns true value", function() {
+    assert.deepEqual(recursiveFilter(isEven, [1]),[]);
+    assert.deepEqual(recursiveFilter(isAboveThreshold(3), [1,2,3,4,5,6]),[4,5,6]);
+  });
+});
+
+

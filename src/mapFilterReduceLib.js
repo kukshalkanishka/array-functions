@@ -1,21 +1,3 @@
-const map = function(mapper, elements){
-  let processedElements = [];
-  for(element of elements){
-    processedElements.push(mapper(element));
-  }
-  return processedElements;
-}
-
-const filter = function(predicate, elements) { 
-  let processedElements = [];
-  for(element of elements){
-    if(predicate(element)) {
-    processedElements.push(element);
-    }
-  }
-  return processedElements;
-}
-
 const reduce = function(reducer, initializer, elements) {
   let result = elements[0];
   let position = 1;
@@ -45,7 +27,7 @@ const mapPrime = function(mapper, elements) {
     return result;
 }
 
-const predicateGenerater = function(predicate) {
+const reducerPrimeGenerater = function(predicate) {
   return function(initializer, element) {
     if(predicate(element)) {
       initializer.push(element);
@@ -55,14 +37,41 @@ const predicateGenerater = function(predicate) {
 }
 
 const filterPrime= function(predicate, elements) {
-  let result = reduce(predicateGenerater(predicate), [], elements);
+  let result = reduce(reducerPrimeGenerater(predicate), [], elements);
   return result;
 }
 
+const recursiveMap = function(mapper, elements, currentResult = []){
+  if(elements.length == 0) {
+    return currentResult;
+  }
+  return recursiveMap(mapper, 
+    elements.slice(1), 
+    currentResult.concat([mapper(elements[0])]));
+}
+
+const filterTruthyElement = function(predicate, element) {
+  if(predicate(element)){
+    return [element];
+  }
+  return;
+}
+
+const recursiveFilter = function(predicate, elements, currentResult = []) {
+  if(elements.length == 0) {
+    return currentResult;
+  }
+  return recursiveFilter(predicate, elements.slice(1),
+    (filterTruthyElement(predicate, elements[0]) && 
+      currentResult.concat(filterTruthyElement(predicate, elements[0]))
+    ) ||
+    currentResult);
+}
+
 module.exports = {
-  map,
-  filter,
   reduce,
   mapPrime,
-  filterPrime
+  filterPrime,
+  recursiveMap,
+  recursiveFilter
 }
